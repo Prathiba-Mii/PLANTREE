@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PLANTREE</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background: #f2f7f2;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .navbar {
+        background-color: #66bb6a !important;
+      }
+      .navbar-brand img {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .navbar-brand span {
+        color: white;
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      h1 {
+        font-size: 3rem;
+        text-align: center;
+        font-weight: 800;
+        margin: 30px 0;
+        color: #2e7d32;
+      }
+
+      /* Card improvements */
+      .plant-card {
+        padding: 12px;
+      }
+      .plant-card:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+      }
+
+      .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: 10px;
+      }
+
+      .card-title {
+        font-weight: 700;
+        color: #2e7d32;
+        font-size: 1.3rem;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        position: relative; /* needed for price badge positioning */
+      }
+      .card:hover {
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Price badge */
+      .price {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1rem;
+        background: #388e3c; /* dark green */
+        padding: 4px 10px;
+        border-radius: 12px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+      }
+      .card:hover .price {
+        transform: scale(1.1);
+      }
+
+      footer {
+        background: #2e7d32;
+        color: white;
+        padding: 25px 0;
+        margin-top: 40px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+
+      #noResultsMsg {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #2e7d32;
+      }
+
+      .search-filter {
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container d-flex justify-content-between">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="/images/plantree-logo.png" alt="Logo" />
+          <span>PLANTREE</span>
+        </a>
+
+        <div class="d-flex gap-2">
+          <a href="/contact" class="btn btn-light btn-sm">Contact</a>
+
+          <% if(isAdmin){ %>
+          <a href="/logout" class="btn btn-light btn-sm">Logout</a>
+          <% } else { %>
+          <a href="/login" class="btn btn-light btn-sm">Admin Login</a>
+          <% } %>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-4">
+      <h1>Welcome to PLANTREE</h1>
+
+      <!-- Admin Add Form -->
+      <% if(isAdmin){ %>
+      <form class="row g-2 mb-4" action="/add" method="POST">
+        <div class="col-md">
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Plant Name"
+            required
+          />
+        </div>
+        <div class="col-md">
+          <input
+            type="text"
+            name="image"
+            class="form-control"
+            placeholder="Image URL"
+            required
+          />
+        </div>
+        <div class="col-md">
+          <select name="type" class="form-select" required>
+            <option selected disabled>Choose Type</option>
+            <option value="Indoor">Indoor</option>
+            <option value="Outdoor">Outdoor</option>
+            <option value="Pot">Pot</option>
+            <option value="Devotional">Devotional</option>
+          </select>
+        </div>
+        <div class="col-md">
+          <input
+            type="text"
+            name="description"
+            class="form-control"
+            placeholder="Description"
+            required
+          />
+        </div>
+        <div class="col-md">
+          <input
+            type="number"
+            name="price"
+            class="form-control"
+            placeholder="Price"
+            required
+          />
+        </div>
+        <div class="col-md">
+          <input
+            type="text"
+            name="smell"
+            class="form-control"
+            placeholder="Smell (optional)"
+          />
+        </div>
+        <div class="col-md">
+          <select name="size" class="form-select">
+            <option selected disabled>Size</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+          </select>
+        </div>
+        <div class="col-md">
+          <select name="devotional" class="form-select">
+            <option selected disabled>Devotional?</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-success w-100">Add Item</button>
+        </div>
+      </form>
+      <% } %>
+
+      <!-- Search Filter -->
+      <section role="search" class="search-filter">
+        <form id="searchForm" class="row g-2">
+          <div class="col-md-3">
+            <label>Name</label
+            ><input
+              id="searchName"
+              class="form-control"
+              placeholder="Plant or Pot Name"
+            />
+          </div>
+          <div class="col-md-2">
+            <label>Type</label>
+            <select id="filterType" class="form-select">
+              <option value="all">All</option>
+              <option value="Indoor">Indoor</option>
+              <option value="Outdoor">Outdoor</option>
+              <option value="Pot">Pot</option>
+              <option value="Devotional">Devotional</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label>Size</label>
+            <select id="filterSize" class="form-select">
+              <option value="all">All</option>
+              <option value="Small">Small</option>
+              <option value="Medium">Medium</option>
+              <option value="Large">Large</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label>Smell</label
+            ><input
+              id="filterSmell"
+              class="form-control"
+              placeholder="Enter smell"
+            />
+          </div>
+          <div class="col-md-2 align-self-end">
+            <button type="submit" class="btn btn-success w-100">Apply</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Plant Cards -->
+      <div id="plantContainer" class="row g-4">
+        <% plants.forEach(plant => { %>
+        <div
+          class="col-md-4 plant-card"
+          data-name="<%= plant.name.toLowerCase() %>"
+          data-type="<%= plant.type %>"
+          data-size="<%= plant.size %>"
+          data-smell="<%= plant.smell ? plant.smell.toLowerCase() : '' %>"
+        >
+          <div class="card shadow-sm h-100">
+            <span class="price">₹<%= plant.price %></span>
+            <img
+              src="<%= plant.image %>"
+              class="card-img-top"
+              alt="<%= plant.name %>"
+            />
+
+            <div class="card-body">
+              <h5 class="card-title"><%= plant.name %></h5>
+              <p><strong>Type:</strong> <%= plant.type %></p>
+              <p><strong>Size:</strong> <%= plant.size || 'N/A' %></p>
+              <p><strong>Smell:</strong> <%= plant.smell || 'N/A' %></p>
+              <p><strong>Description:</strong> <%= plant.description %></p>
+
+              <!-- WhatsApp Buy Button -->
+              <a
+                class="btn btn-success w-100 mt-2"
+                href="https://wa.me/917093206757?text=I want to buy this plant: <%= plant.name %>"
+                target="_blank"
+                >Buy on WhatsApp</a
+              >
+            </div>
+
+            <% if(isAdmin){ %>
+            <div class="card-footer d-flex justify-content-between">
+              <a
+                href="/edit/<%= plant._id %>"
+                class="btn btn-primary btn-sm w-50 me-1"
+                >Edit</a
+              >
+
+              <form
+                action="/delete/<%= plant._id %>"
+                method="POST"
+                class="w-50 ms-1"
+              >
+                <button class="btn btn-danger btn-sm w-100">Delete</button>
+              </form>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+
+      <p id="noResultsMsg" class="text-center mt-3" style="display: none">
+        No results found. Try again!
+      </p>
+    </main>
+
+    <footer class="text-center">
+      <p>🌱 Made by Kaluri Sai Kumar 💚</p>
+      <small>© 2025 PLANTREE. All rights reserved.</small>
+    </footer>
+
+    <script>
+      const form = document.getElementById("searchForm");
+      const cards = document.querySelectorAll(".plant-card");
+      const noResults = document.getElementById("noResultsMsg");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let name = document.getElementById("searchName").value.toLowerCase();
+        let type = document.getElementById("filterType").value;
+        let size = document.getElementById("filterSize").value;
+        let smell = document.getElementById("filterSmell").value.toLowerCase();
+        let count = 0;
+
+        cards.forEach((card) => {
+          let cName = card.dataset.name;
+          let cType = card.dataset.type;
+          let cSize = card.dataset.size;
+          let cSmell = card.dataset.smell;
+
+          if (
+            (cName.includes(name) || name === "") &&
+            (type === "all" || cType === type) &&
+            (size === "all" || cSize === size) &&
+            (smell === "" || cSmell.includes(smell))
+          ) {
+            card.style.display = "";
+            count++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        noResults.style.display = count === 0 ? "block" : "none";
+      });
+    </script>
+  </body>
+</html>

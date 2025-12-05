@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width , initial-scale=1.0">
+    <title>Plant Portal</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Welcome to Plant Portal</h1>
+    <form action="/add" method="POST">
+      <input type="text" name="name" placeholder="Plant Name" required />
+      <input type="text" name="image" placeholder="Plant Image URL" required />
+      <input type="text" name="name" placeholder="Plant Type" required />
+      <input type="text" name="name" placeholder="Plant Description" required />
+      <input type="text" name="name" placeholder="Plant Price" required />
+      <button type="submit">Add Plant</button>
+    </form>
+
+    <h2>All Plants</h2>
+    <ul>
+      <% plants.forEach((plant) => { %>
+        <li>
+          <strong><%= plant.name %></strong> -<%= plant.type %><br>
+          <em><%= plant.description %></em><br>
+          Price: ₹<%= plant.price %>
+        </li>
+      <% }) %>
+    </ul>
+  </body>
+</html>

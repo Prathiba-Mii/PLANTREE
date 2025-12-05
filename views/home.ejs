@@ -1,0 +1,66 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plant Portal</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="/">🌿 Plant Portal</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Welcome to Plant Portal</h1>
+
+      <!-- Add Plant Form -->
+      <form
+        class="d-flex justify-content-center mb-4"
+        action="/add"
+        method="POST"
+      >
+        <input type="text" name="name" class="form-control mx-1" placeholder="Plant Name" required />
+        <input type="text" name="image" class="form-control mx-1" placeholder="Plant Image URL" required />
+        <input type="text" name="type" class="form-control mx-1" placeholder="Plant Type" required />
+        <input type="text" name="description" class="form-control mx-1" placeholder="Plant Description" required />
+        <input type="number" name="price" class="form-control mx-1" placeholder="Plant Price" required />
+        <button type="submit" class="btn btn-success">Add Plant</button>
+      </form>
+
+      <h3 class="text-center mb-3">All Plants</h3>
+
+      <!-- Display All Plants -->
+      <div class="row">
+        <% plants.forEach(plant => { %>
+          <div class="col-md-3 mb-4">
+            <div class="card">
+              <img src="<%= plant.image %>" class="card-img-top" alt="<%= plant.name %>">
+              <div class="card-body text-center">
+                <h5 class="card-title"><%= plant.name %></h5>
+                <p class="text-muted"><%= plant.type %></p>
+                <p><%= plant.description %></p>
+                <p class="fw-bold">₹<%= plant.price %></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>🌱 Made with love by Prathibha 💚</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html> -->

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Plant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { background-color: #f0f9f0; padding: 30px; }
+    .edit-form { background: #ffffff; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .form-label { font-weight: 600; }
+    .btn-update { background-color: #66bb6a; border: none; transition: 0.3s; }
+    .btn-update:hover { background-color: #45a049; }
+  </style>
+</head>
+
+<body>
+  <h2 class="text-center mb-4">Edit Plant</h2>
+
+  <form action="/edit/<%= plant._id %>" method="POST" class="edit-form">
+    <div class="mb-3">
+      <label class="form-label">Name:</label>
+      <input type="text" name="name" class="form-control" value="<%= plant.name %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Image URL:</label>
+      <input type="text" name="image" class="form-control" value="<%= plant.image %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Type:</label>
+      <select name="type" class="form-select" required>
+        <option value="Indoor" <%= plant.type === 'Indoor' ? 'selected' : '' %>>Indoor</option>
+        <option value="Outdoor" <%= plant.type === 'Outdoor' ? 'selected' : '' %>>Outdoor</option>
+        <option value="Pot" <%= plant.type === 'Pot' ? 'selected' : '' %>>Pot</option>
+        <option value="Devotional" <%= plant.type === 'Devotional' ? 'selected' : '' %>>Devotional</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description:</label>
+      <input type="text" name="description" class="form-control" value="<%= plant.description %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Price:</label>
+      <input type="number" name="price" class="form-control" value="<%= plant.price %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Smell:</label>
+      <input type="text" name="smell" class="form-control" value="<%= plant.smell %>">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Size:</label>
+      <select name="size" class="form-select">
+        <option value="Small" <%= plant.size === 'Small' ? 'selected' : '' %>>Small</option>
+        <option value="Medium" <%= plant.size === 'Medium' ? 'selected' : '' %>>Medium</option>
+        <option value="Large" <%= plant.size === 'Large' ? 'selected' : '' %>>Large</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Devotional:</label>
+      <select name="devotional" class="form-select">
+        <option value="true" <%= plant.devotional ? 'selected' : '' %>>Yes</option>
+        <option value="false" <%= !plant.devotional ? 'selected' : '' %>>No</option>
+      </select>
+    </div>
+
+    <button class="btn btn-update w-100">Update Plant</button>
+  </form>
+</body>
+</html>
