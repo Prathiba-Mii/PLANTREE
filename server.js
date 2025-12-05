@@ -23,7 +23,7 @@ app.get("/contact", (req, res) => {
 
 // ADMIN CREDENTIALS
 const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "1234";
+const ADMIN_PASSWORD = "***";
 let isAdminLoggedIn = false;
 
 // HOME PAGE
